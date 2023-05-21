@@ -29,10 +29,70 @@ let fruits = JSON.parse(fruitsJSON);
 const display = () => {
   // TODO: очищаем fruitsList от вложенных элементов,
   // чтобы заполнить актуальными данными из fruits
+  fruitsList.innerHTML = null; 
 
   for (let i = 0; i < fruits.length; i++) {
     // TODO: формируем новый элемент <li> при помощи document.createElement,
     // и добавляем в конец списка fruitsList при помощи document.appendChild
+    
+    // пока сделаем через дивы
+
+    //Индекс фрукта
+    fruitsDivIndex = document.createElement('div');
+    fruitsDivIndex.className = 'fruit__info';
+    fruitsDivIndex.textContent = 'index # ' + i;
+
+    //Название фрукта
+    fruitsDivKind = document.createElement('div');
+    fruitsDivKind.className = 'fruit__info';
+    fruitsDivKind.textContent = 'kind: ' + fruits[i].kind;
+
+    //Цвет по русски
+    fruitsDivColor = document.createElement('div');
+    fruitsDivColor.className = 'fruit__info';
+    fruitsDivColor.textContent = 'color: ' + fruits[i].color;
+
+    //Вес фрукта
+    fruitsDivWeight = document.createElement('div');
+    fruitsDivWeight.className = 'fruit__info';
+    fruitsDivWeight.textContent = 'weight (кг): ' + fruits[i].weight;
+    
+    //Собираем карточку фрукта
+    fruitsDivMain = document.createElement('div');
+    fruitsDivMain.className = 'fruit__info';
+    fruitsDivMain.appendChild(fruitsDivIndex);
+    fruitsDivMain.appendChild(fruitsDivKind);
+    fruitsDivMain.appendChild(fruitsDivColor);
+    fruitsDivMain.appendChild(fruitsDivWeight);
+
+    
+    newElementLi = document.createElement('li');
+
+    //Поиск цвета рамки по русскому названию
+    //Надо добавяить два класса
+    switch(fruits[i].color) {
+     
+      case 'фиолетовый': 
+      newElementLi.className = 'fruit__item fruit_violet'; 
+      break
+      case 'зеленый': 
+      newElementLi.className = 'fruit__item fruit_green'; 
+      break
+      case 'розово-красный': 
+      newElementLi.className = 'fruit__item fruit_carmazin'; 
+      break
+      case 'желтый': 
+      newElementLi.className = 'fruit__item fruit_yellow'; 
+      break
+      case 'светло-коричневый': 
+      newElementLi.className = 'fruit__item fruit_lightbrown'; 
+      break
+      
+    } 
+    newElementLi.innerHTML = fruitsDivMain.innerHTML;
+    fruitsList.appendChild(newElementLi); 
+  
+
   }
 };
 
