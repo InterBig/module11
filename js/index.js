@@ -253,6 +253,7 @@ const comparationColor = (a, b) => {
 };
 
 const sortAPI = {
+
   bubbleSort(arr, comparation) {
     // TODO: допишите функцию сортировки пузырьком
     const number = arr.length;
@@ -272,8 +273,60 @@ const sortAPI = {
     }
   },
 
+
   quickSort(arr, comparation) {
     // TODO: допишите функцию быстрой сортировки
+
+    // функция обмена элементов
+  function swap(arr, firstIndex, secondIndex){
+  const temp = arr[firstIndex];
+  arr[firstIndex] = arr[secondIndex];
+  arr[secondIndex] = temp;
+}
+
+  // функция разделитель
+  function partition(arr,  left, right) {
+    let pivot = arr[Math.floor((right + left) / 2)].color_weight;
+    let i = left;
+    let j = right;
+
+    while (i <= j) {
+        while (comparation (pivot, arr[i].color_weight)) {
+          console.log('arr[i] ' + arr[i].color_weight);
+            i++;
+        }
+        while (comparation (arr[j].color_weight, pivot)) {
+          console.log('arr[j] ' + arr[j].color_weight);
+            j--;
+        }
+        if (i <= j) {
+            swap(arr, i, j);
+            i++;
+            j--;
+        }
+    }
+    return i;
+  }
+
+// алгоритм быстрой сортировки
+function quickSortColor(arr, comparation, left, right) {
+  var index;
+  if (arr.length > 1) {
+      left = typeof left != "number" ? 0 : left;
+      right = typeof right != "number" ? arr.length - 1 : right;
+      index = partition(arr,  left, right);
+      if (left < index - 1) {
+        quickSortColor(arr, comparation, left, index - 1);
+      }
+      if (index < right) {
+        quickSortColor(arr, comparation, index, right);
+      }
+  }
+ return arr; 
+}
+return  quickSortColor(arr, comparation)
+  
+
   },
 
   // выполняет сортировку и производит замер времени
@@ -291,6 +344,8 @@ sortTimeLabel.textContent = sortTime;
 
 sortChangeButton.addEventListener('click', () => {
   // TODO: переключать значение sortKind между 'bubbleSort' / 'quickSort'
+  sortKind = (sortKind==='bubbleSort')? 'quickSort' : 'bubbleSort';
+  sortKindLabel.textContent = sortKind;
 });
 
 sortActionButton.addEventListener('click', () => {
