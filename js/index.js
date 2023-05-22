@@ -119,7 +119,8 @@ const display = () => {
       case 'светло-коричневый': 
         newElementLi.className = 'fruit__item fruit_lightbrown'; 
       break
-      
+      default: 
+      newElementLi.className = 'fruit__item fruit_blue'; 
     } 
     newElementLi.innerHTML = fruitsDivMain.innerHTML;
     fruitsList.appendChild(newElementLi); 
@@ -361,5 +362,19 @@ sortActionButton.addEventListener('click', () => {
 addActionButton.addEventListener('click', () => {
   // TODO: создание и добавление нового фрукта в массив fruits
   // необходимые значения берем из kindInput, colorInput, weightInput
+
+  if (kindInput.value && colorInput.value && weightInput.value) {
+    fruits.push({
+      kind: kindInput.value,
+      color: colorInput.value,
+      weight: weightInput.value,
+      color_weight:7,
+      
+    });
+  } else {
+    alertMessage.innerText = "Необходимо заполнить все поля";
+    modalAlert.show();
+  }
+  console.log(fruits);
   display();
 });

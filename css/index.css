@@ -105,10 +105,13 @@ main {
   width: fit-content;
   height: 100px;
   border-radius: 10px;
-}
+  }
 
 .fruit_violet {
   background: #8b00ff;
+}
+.fruit_blue {
+  background: #0400ff;
 }
 
 .fruit_green {
