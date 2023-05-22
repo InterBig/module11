@@ -10,6 +10,8 @@ const kindInput = document.querySelector('.kind__input'); // поле с наз�
 const colorInput = document.querySelector('.color__input'); // поле с названием цвета
 const weightInput = document.querySelector('.weight__input'); // поле с весом
 const addActionButton = document.querySelector('.add__action__btn'); // кнопка добавления
+const minValueWeight = document.querySelector('.minweight__input'); // минимальный вес
+const maxValueWeight = document.querySelector('.maxweight__input'); // максимальный вес 
 
 // список фруктов в JSON формате
 let fruitsJSON = `[
@@ -125,12 +127,12 @@ const shuffleFruits = () => {
   //Проверка Alerta при совпадении массивов, разкомментировать строку ниже
   //fruits=arrayOldFruits;
 
-  //Сама проверка идентичности массимов старого и нового
+  //Сама проверка идентичности массивов старого и нового
   if (JSON.stringify(fruits) === JSON.stringify(arrayOldFruits)) {
     alert('Порядок не изменился! Перемещайте еще раз!');
   }
 
-  // присваеваем массив fruits полученные результаты из массива result
+  // присваиваем массиву fruits полученные результаты из массива result
   fruits = result; 
 };
 
@@ -144,12 +146,55 @@ shuffleButton.addEventListener('click', () => {
 
 // фильтрация массива
 const filterFruits = () => {
-  fruits.filter((item) => {
+  let result = [];
+  //fruits.filter((item) => {
     // TODO: допишите функцию
-  });
+    let minValue = parseInt(minValueWeight.value) || 0; //добавили присвоение по дефолту
+    let maxValue = parseInt(maxValueWeight.value) || 100; //добавили присвоение по дефолту
+    console.log('Минимальное число '+ minValue); //Вывод в консоль для проверки
+    console.log('Максимальное число '+ maxValue);//Вывод в консоль для проверки
+
+
+    
+    //проверка если не число то по дефолту
+    if (isNaN(minValue)) {
+      minValue = 0
+    };
+    if (isNaN(maxValue)) {
+      maxValue = 100
+    };
+
+    //проверка на минимальное и максимальное значение
+    minValue = (minValue < 0) ? 0 : minValue;
+    minValue = (minValue > 99) ? 99 : minValue;
+    maxValue = (maxValue > 100) ? 100 : maxValue;
+    maxValue = (maxValue < 1) ? 1 : maxValue;
+    
+    // смена если меньшее больше больщего 
+    if (minValue > maxValue) { 
+      minValueError = minValue;
+      minValue = maxValue;
+      maxValue = minValueError;
+    }
+
+   // fruits.filter((item) => {
+      for (let i = 0; i < fruits.length; i++) {
+        if ((fruits[i].weight >= minValue) && (fruits[i].weight <= maxValue)) {
+          console.log('index '+ i);//Вывод в консоль для проверки
+          console.log('fruits[index] '+ fruits[i]);//Вывод в консоль для проверки
+
+        result.push(fruits[i]);
+      }
+    }
+
+    fruits = result;  
+
+
+//});
 };
 
 filterButton.addEventListener('click', () => {
+  fruits = JSON.parse(fruitsJSON);
   filterFruits();
   display();
 });
