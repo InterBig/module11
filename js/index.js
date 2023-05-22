@@ -25,16 +25,35 @@ let fruitsJSON = `[
 //массив приоритетов цветов
 //let priority = ['фиолетовый', 'зеленый', 'розово-красный', 'желтый', 'светло-коричневый'];
 let priorityJSON = `[
-  {"color": "фиолетовый", "weight": 1},
-  {"color": "зеленый", "weight": 2},
-  {"color": "розово-красный", "weight": 3},
-  {"color": "желтый", "weight": 4},
-  {"color": "светло-коричневый", "weight": 5}
+  {"color_weight": 1, "color": "фиолетовый"},
+  {"color_weight": 2, "color": "зеленый"},
+  {"color_weight": 3, "color": "розово-красный"},
+  {"color_weight": 4, "color": "желтый"},
+  {"color_weight": 5, "color": "светло-коричневый"}
 ]`;
 
 // преобразование JSON в объект JavaScript
 let fruits = JSON.parse(fruitsJSON);
 let priority = JSON.parse(priorityJSON);
+
+//одъединяем два массива, скрипт честно взять с интернета
+const mergeByProperty = (arrays, property = "color") => {
+  const arr = arrays.flatMap((item) => item); //делаем из всех массивов - один
+
+  const obj = arr.reduce((acc, item) => {
+    return { // делаем из массива - объект, чтобы повторения перезаписывались
+      ...acc,
+      [item[property]]: { ...acc[item[property]], ...item }
+    };
+  }, {});
+
+  return Object.values(obj); //обратно преобразуем из объекта в массив
+};
+
+const result1 = mergeByProperty([fruits, priority]);
+console.log(result1);
+fruits = result1;
+console.log(fruits);
 
 /*** ОТОБРАЖЕНИЕ ***/
 
@@ -147,7 +166,7 @@ const shuffleFruits = () => {
   fruits = result; 
 };
 
-//кнопка сортировки
+//кнопка перемещивания
 shuffleButton.addEventListener('click', () => {
   shuffleFruits();
   display();
@@ -164,8 +183,6 @@ const filterFruits = () => {
     let maxValue = parseInt(maxValueWeight.value) || 100; //добавили присвоение по дефолту
     console.log('Минимальное число '+ minValue); //Вывод в консоль для проверки
     console.log('Максимальное число '+ maxValue);//Вывод в консоль для проверки
-
-
     
     //проверка если не число то по дефолту
     if (isNaN(minValue)) {
@@ -206,6 +223,10 @@ const filterFruits = () => {
 
 filterButton.addEventListener('click', () => {
   fruits = JSON.parse(fruitsJSON);
+  priority = JSON.parse(priorityJSON);
+  const result1 = mergeByProperty([fruits, priority]);
+console.log(result1);
+fruits = result1;
   filterFruits();
   display();
 });
@@ -237,15 +258,15 @@ const sortAPI = {
     const number = arr.length;
     //console.log('arr.length '+ n); //Вывод в консоль для проверки
     // внешний цикл
-    for (let i = 0; i < number - 1; i++) {
+    for (let out_i = 0; out_i < number - 1; out_i++) {
       // внутрений цикл для перестановки элемента  в конец массива
-      for (let j = 0; j < number - 1 - i; j++) {
-        //console.log('arr[j].color ' + arr[j].color +' '+ arr[j].weight); //Вывод в консоль для проверки
-        //console.log('arr[j + 1].color ' + arr[j + 1].color +' '+ arr[j+1].weight); //Вывод в консоль для проверки
-        if (comparation(arr[j].weight, arr[j + 1].weight)) {
-          let temp = arr[j + 1];
-          arr[j + 1] = arr[j];
-          arr[j] = temp;
+      for (let in_i = 0; in_i < number - 1 - out_i; in_i++) {
+        console.log('arr[j].color ' + arr[in_i].color +' '+ arr[in_i].color_weight); //Вывод в консоль для проверки
+        console.log('arr[j + 1].color ' + arr[in_i + 1].color +' '+ arr[in_i+1].color_weight); //Вывод в консоль для проверки
+        if (comparation(arr[in_i].color_weight, arr[in_i + 1].color_weight)) {
+          let temp = arr[in_i + 1];
+          arr[in_i + 1] = arr[in_i];
+          arr[in_i] = temp;
         }
       }
     }
