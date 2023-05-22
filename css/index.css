@@ -131,8 +131,8 @@ main {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  border-radius: 5px;
+  border-radius: 0px;
   background: #fff;
-  height: 40%;
+  height: 20%;
   padding: 10px;
 }

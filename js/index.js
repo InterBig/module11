@@ -73,26 +73,24 @@ const display = () => {
     switch(fruits[i].color) {
      
       case 'фиолетовый': 
-      newElementLi.className = 'fruit__item fruit_violet'; 
+        newElementLi.className = 'fruit__item fruit_violet'; 
       break
       case 'зеленый': 
-      newElementLi.className = 'fruit__item fruit_green'; 
+        newElementLi.className = 'fruit__item fruit_green'; 
       break
       case 'розово-красный': 
-      newElementLi.className = 'fruit__item fruit_carmazin'; 
+        newElementLi.className = 'fruit__item fruit_carmazin'; 
       break
       case 'желтый': 
-      newElementLi.className = 'fruit__item fruit_yellow'; 
+        newElementLi.className = 'fruit__item fruit_yellow'; 
       break
       case 'светло-коричневый': 
-      newElementLi.className = 'fruit__item fruit_lightbrown'; 
+        newElementLi.className = 'fruit__item fruit_lightbrown'; 
       break
       
     } 
     newElementLi.innerHTML = fruitsDivMain.innerHTML;
     fruitsList.appendChild(newElementLi); 
-  
-
   }
 };
 
@@ -109,6 +107,7 @@ const getRandomInt = (min, max) => {
 // перемешивание массива
 const shuffleFruits = () => {
   let result = [];
+  arrayOldFruits = Array.from(fruits);
 
   // ATTENTION: сейчас при клике вы запустите бесконечный цикл и браузер зависнет
   while (fruits.length > 0) {
@@ -118,11 +117,24 @@ const shuffleFruits = () => {
     // вырезаем его из fruits и вставляем в result.
     // ex.: [1, 2, 3], [] => [1, 3], [2] => [3], [2, 1] => [], [2, 1, 3]
     // (массив fruits будет уменьшатся, а result заполняться)
+    indexFruits = getRandomInt(0,fruits.length - 1);// случайный ключ. т нуля до длина-1
+    result.push(fruits[indexFruits]);//вставляем элемент из fruits в result
+    fruits.splice(indexFruits, 1,);//вырезаем из fruits элемент
   }
 
-  fruits = result;
+  //Проверка Alerta при совпадении массивов, разкомментировать строку ниже
+  //fruits=arrayOldFruits;
+
+  //Сама проверка идентичности массимов старого и нового
+  if (JSON.stringify(fruits) === JSON.stringify(arrayOldFruits)) {
+    alert('Порядок не изменился! Перемещайте еще раз!');
+  }
+
+  // присваеваем массив fruits полученные результаты из массива result
+  fruits = result; 
 };
 
+//кнопка сортировки
 shuffleButton.addEventListener('click', () => {
   shuffleFruits();
   display();
