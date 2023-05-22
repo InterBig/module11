@@ -113,6 +113,14 @@ main {
 .fruit_blue {
   background: #0400ff;
 }
+.fruit_red {
+  background: #ff0000;
+}
+
+.fruit_orange {
+  background: orange;
+}
+
 
 .fruit_green {
   background: #84cd1b;

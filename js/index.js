@@ -30,6 +30,7 @@ let priorityJSON = `[
   {"color_weight": 3, "color": "розово-красный"},
   {"color_weight": 4, "color": "желтый"},
   {"color_weight": 5, "color": "светло-коричневый"}
+  
 ]`;
 
 // преобразование JSON в объект JavaScript
@@ -119,8 +120,15 @@ const display = () => {
       case 'светло-коричневый': 
         newElementLi.className = 'fruit__item fruit_lightbrown'; 
       break
+      case 'красный': 
+        newElementLi.className = 'fruit__item fruit_red'; 
+      break
+      case 'синий': 
+        newElementLi.className = 'fruit__item fruit_blue'; 
+      break
+
       default: 
-      newElementLi.className = 'fruit__item fruit_blue'; 
+      newElementLi.className = 'fruit__item fruit_orange'; 
     } 
     newElementLi.innerHTML = fruitsDivMain.innerHTML;
     fruitsList.appendChild(newElementLi); 
@@ -240,16 +248,11 @@ let sortTime = '-'; // инициализация состояния време�
 
 const comparationColor = (a, b) => {
   // TODO: допишите функцию сравнения двух элементов по цвету
-  //console.log('colorA '+ arr[a].weight); //Вывод в консоль для проверки
-  //console.log('colorA '+ priority[b].weight); //Вывод в консоль для проверки
-
-  //const colorA = priority[a].weight;
-  //const colorB = priority[b].weight;
   colorA=a;
   colorB=b;
   console.log('colorA '+ colorA); //Вывод в консоль для проверки
   console.log('colorB '+ colorB); //Вывод в консоль для проверки
-  return colorA > colorB;
+  return colorA > colorB; //по идее функция получилась как бы и нен нужная в данном решении
 
 };
 
@@ -351,10 +354,13 @@ sortChangeButton.addEventListener('click', () => {
 
 sortActionButton.addEventListener('click', () => {
   // TODO: вывести в sortTimeLabel значение 'sorting...'
+  start = new Date().getTime(); 
   const sort = sortAPI[sortKind];
   sortAPI.startSort(sort, fruits, comparationColor);
-  display();
-  // TODO: вывести в sortTimeLabel значение sortTime
+  end = new Date().getTime();
+  sortTime = `${end - start} ms`;
+  sortTimeLabel.textContent = sortTime;
+  display();  
 });
 
 /*** ДОБАВИТЬ ФРУКТ ***/
@@ -363,18 +369,67 @@ addActionButton.addEventListener('click', () => {
   // TODO: создание и добавление нового фрукта в массив fruits
   // необходимые значения берем из kindInput, colorInput, weightInput
 
-  if (kindInput.value && colorInput.value && weightInput.value) {
+  if (kindInput.value && colorInput.value && weightInput.value) { //проверка что все поля заполнены
+    
+    if (isNaN(weightInput.value)) { // проверка ечли не число
+      weightInput.value = 0
+    }
+    weightInput.value = (weightInput.value < 0) ? 1 : weightInput.value;//проверка на отрицательные
+    weightInput.value = (weightInput.value > 99) ? 99 : weightInput.value; // проверка на максимальные
+    
+    //Добавления цвета и порядка сортировки нового фрукта
+    switch(colorInput.value) {
+     
+      case 'фиолетовый': 
+        color1 = 'фиолетовый',
+        color_weight1 = 1; 
+      break
+      case 'зеленый': 
+        color1 = 'зеленый',
+        color_weight1 = 2;
+      break
+      case 'розово-красный': 
+        color1 = 'розово-красный',
+        color_weight1 = 3;
+      break
+      case 'желтый': 
+        color1 = 'желтый',
+        color_weight1 = 4;
+      break
+      case 'светло-коричневый': 
+      color1 = 'светло-коричневый',
+      color_weight1 = 5; 
+      break
+      case 'красный': 
+      color1 = 'красный',
+      color_weight1 = 6;
+      break
+      case 'синий': 
+      color1 = 'синий',
+      color_weight1 = 7;
+      break
+
+      default: //ненашли цвет то пусть будет оранжевый
+        color1 = 'оранжевый',
+        color_weight1 = 8;
+    }
+
     fruits.push({
       kind: kindInput.value,
-      color: colorInput.value,
+     //color: colorInput.value,
+      color: color1,
       weight: weightInput.value,
-      color_weight:7,
+      color_weight:color_weight1,
       
     });
   } else {
-    alertMessage.innerText = "Необходимо заполнить все поля";
-    modalAlert.show();
+      alert('Необходимо заполнить все поля!');
   }
   console.log(fruits);
+// очистка строк ввода параметров нового фрукта
+kindInput.value = null; 
+colorInput.value = null;
+weightInput.value = null;
+
   display();
 });
