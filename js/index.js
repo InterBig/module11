@@ -22,8 +22,19 @@ let fruitsJSON = `[
   {"kind": "Тамаринд", "color": "светло-коричневый", "weight": 22}
 ]`;
 
+//массив приоритетов цветов
+//let priority = ['фиолетовый', 'зеленый', 'розово-красный', 'желтый', 'светло-коричневый'];
+let priorityJSON = `[
+  {"color": "фиолетовый", "weight": 1},
+  {"color": "зеленый", "weight": 2},
+  {"color": "розово-красный", "weight": 3},
+  {"color": "желтый", "weight": 4},
+  {"color": "светло-коричневый", "weight": 5}
+]`;
+
 // преобразование JSON в объект JavaScript
 let fruits = JSON.parse(fruitsJSON);
+let priority = JSON.parse(priorityJSON);
 
 /*** ОТОБРАЖЕНИЕ ***/
 
@@ -204,13 +215,40 @@ filterButton.addEventListener('click', () => {
 let sortKind = 'bubbleSort'; // инициализация состояния вида сортировки
 let sortTime = '-'; // инициализация состояния времени сортировки
 
+
 const comparationColor = (a, b) => {
   // TODO: допишите функцию сравнения двух элементов по цвету
+  //console.log('colorA '+ arr[a].weight); //Вывод в консоль для проверки
+  //console.log('colorA '+ priority[b].weight); //Вывод в консоль для проверки
+
+  //const colorA = priority[a].weight;
+  //const colorB = priority[b].weight;
+  colorA=a;
+  colorB=b;
+  console.log('colorA '+ colorA); //Вывод в консоль для проверки
+  console.log('colorB '+ colorB); //Вывод в консоль для проверки
+  return colorA > colorB;
+
 };
 
 const sortAPI = {
   bubbleSort(arr, comparation) {
     // TODO: допишите функцию сортировки пузырьком
+    const number = arr.length;
+    //console.log('arr.length '+ n); //Вывод в консоль для проверки
+    // внешний цикл
+    for (let i = 0; i < number - 1; i++) {
+      // внутрений цикл для перестановки элемента  в конец массива
+      for (let j = 0; j < number - 1 - i; j++) {
+        //console.log('arr[j].color ' + arr[j].color +' '+ arr[j].weight); //Вывод в консоль для проверки
+        //console.log('arr[j + 1].color ' + arr[j + 1].color +' '+ arr[j+1].weight); //Вывод в консоль для проверки
+        if (comparation(arr[j].weight, arr[j + 1].weight)) {
+          let temp = arr[j + 1];
+          arr[j + 1] = arr[j];
+          arr[j] = temp;
+        }
+      }
+    }
   },
 
   quickSort(arr, comparation) {
